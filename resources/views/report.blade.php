@@ -31,11 +31,14 @@
                 </div>
 
                 <div class="form-group col-sm-6">
+                    @if ($warning)
+                        <label style="color: #a94442" class="col-sm-8 control-label"><span class="glyphicon glyphicon-info-sign"></span>{{ $warning['msg'] }}</label>
+                    @endif
                     <div class="pull-right col-sm-4">
                         <button id="searchBtn" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-search"></span> 查询
                         </button>
-                        <button id="exportBtn" type="button" class="btn btn-default">
+                        <button id="exportBtn" type="button" class="btn btn-default" @if($warning) disabled @endif>
                             <span class="glyphicon glyphicon-export"></span> 导出
                         </button>
                     </div>

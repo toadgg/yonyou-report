@@ -7,7 +7,7 @@
     endDate : new Date()
 });
 $("#searchBtn").on('click', function(){
-    $(this).closest('form').submit();
+    $(this).closest('form').attr("action", "/").submit();
 });
 
 $("#exportBtn").on('click', function(){

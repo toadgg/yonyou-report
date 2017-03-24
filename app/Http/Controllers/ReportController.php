@@ -44,10 +44,16 @@ class ReportController extends Controller
             ->paginate(100);
         $etime=microtime(true);
         $tips = null;
+        $warning = null;
         if ($request->get('page') == null) {
             $tips = "用时间 " . round(($etime-$stime), 3) . " 秒为您检索出 " . $data->total() ." 条数据";
         }
-        return view('report', ['rows' => $data, 'q' => $q, 'tips' => $tips]);
+        if ($data->total() >= 10000) {
+            $warning = [
+                'msg' => '数据大于1w条，请缩小查询范围后导出Excel'
+            ];
+        }
+        return view('report', ['rows' => $data, 'q' => $q, 'tips' => $tips, 'warning' => $warning]);
     }
 
     public function export(Request $request){
@@ -73,15 +79,15 @@ class ReportController extends Controller
             $builder->where('bd_invbasdoc.invname', 'like', "%$name%");
         }
 
-        $data = $builder->orderBy('jzpm_mt_cplan.tbilltime', 'desc')->get()->toArray();
+        $query = $builder->orderBy('jzpm_mt_cplan.tbilltime', 'desc');
 
-        $cellData = json_decode(json_encode($data), true);
-
-        Excel::create("XYJH-$start-$end",function($excel) use ($cellData){
-            $excel->sheet('需用计划', function($sheet) use ($cellData){
-                $sheet->fromArray($cellData);
-                $sheet->row(1, array(
-                    'NO', '物资编码', '物资名称', '规格', '申报数量', '单价', '添加剂', '供应商', '核定时间', '备注'
+        Excel::create("XYJH-$start-$end",function($excel) use ($query){
+            $excel->sheet('需用计划', function($sheet) use ($query){
+                $query->chunk(1000, function($data) use ($sheet) {
+                    $sheet->fromArray(json_decode(json_encode($data), true), null, 'A1', false, false);
+                });
+                $sheet->prependRow(array(
+                    '', 'NO', '物资编码', '物资名称', '规格', '申报数量', '单价', '添加剂', '供应商', '核定时间', '备注'
                 ));
             });
         })->export('xls');
