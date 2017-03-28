@@ -9,6 +9,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request) {
         $stime=microtime(true);
         $start = $request->get('start', date('Y-m-d', strtotime('-3 month')));
