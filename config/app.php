@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => '需用计划查询',
+    'name' => '天一控股自助查询平台',
 
     /*
     |--------------------------------------------------------------------------

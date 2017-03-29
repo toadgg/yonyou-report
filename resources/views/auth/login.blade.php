@@ -1,68 +1,71 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ config('app.locale') }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">登录</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <label for="username" class="col-md-4 control-label">用户名</label>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-                            <div class="col-md-6">
-                                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+    <link href="{{ asset("css/main.css") }}" rel="stylesheet">
+</head>
 
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+<body class="login">
+<div>
+    <div class="login_wrapper">
+        <div class="animate form login_form">
+            <section class="login_content">
+                <form method="post" action="{{ url('/login') }}">
+                    {!! csrf_field() !!}
+                    
+                    <h1>Login Form</h1>
+                    <div class="form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}">
+                        <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Email">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                        @if ($errors->has('username'))
+                            <span class="help-block">
+                      <strong>{{ $errors->first('username') }}</strong>
+                </span>
+                        @endif
+                    </div>
+                    
+                    <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <input type="password" class="form-control" placeholder="Password" name="password">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                        @if ($errors->has('password'))
+                            <span class="help-block">
+                  <strong>{{ $errors->first('password') }}</strong>
+                </span>
+                        @endif
+                    
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-default submit" value="Log in">
+                        <a class="reset_pass" href="{{  url('/password/reset') }}">Lost your password?</a>
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    
+                    <div class="separator">
+                        <p class="change_link">New to site?
+                            <a href="{{ url('/register') }}" class="to_register"> Create Account </a>
+                        </p>
+                        
+                        <div class="clearfix"></div>
+                        <br />
+                        
+                        <div>
+                            <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                            <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
                         </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">密码</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> 记住登录状态
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    登录
-                                </button>
-
-                                <a class="btn btn-link invisible" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                    </div>
+                </form>
+            </section>
         </div>
     </div>
 </div>
-@endsection
+</body>
+</html>

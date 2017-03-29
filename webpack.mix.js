@@ -11,10 +11,19 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js(['resources/assets/js/app.js'], 'public/js')
-   .scripts(['resources/assets/bootstrap-datepicker/js/bootstrap-datepicker.js',
-            'resources/assets/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js',
-            'resources/assets/js/report.js'
-   ], 'public/js/all.js')
-   .sass('resources/assets/sass/app.scss', 'public/css')
-   .styles('resources/assets/bootstrap-datepicker/css/bootstrap-datepicker3.css', 'public/css/all.css');
+mix.copy('resources/assets/gentelella/vendors/font-awesome/fonts/', 'public/fonts')
+   .js([
+       'resources/assets/js/app.js',
+       'resources/assets/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.js',
+       'resources/assets/gentelella/vendors/nprogress/nprogress.js',
+       'resources/assets/gentelella/src/js/helpers/smartresize.js',
+       'resources/assets/gentelella/src/js/custom.js',
+       'resources/assets/js/report.js'
+   ], 'public/js/app.js')
+   .sass('resources/assets/sass/app.scss', 'public/css/main.css')
+   .combine([
+        'resources/assets/gentelella/vendors/font-awesome/css/font-awesome.min.css',
+        'resources/assets/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css',
+        'resources/assets/gentelella/vendors/nprogress/nprogress.css',
+        'public/css/main.css'
+    ], 'public/css/main.css');
