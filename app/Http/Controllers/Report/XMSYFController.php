@@ -92,7 +92,7 @@ class XMSYFController extends Controller
                     $sheet->fromArray(json_decode(json_encode($data), true), null, 'A1', false, false);
                 });
                 $sheet->prependRow(array(
-                    '序号', '项目名称', '日期', '金额（元）', '支付范围（时间）', '试验室名称', '备注'
+                    '序号', '项目名称', '申请日期', '金额（元）', '支付范围（时间）', '试验室名称', '备注'
                 ));
             });
         })->export('xls');
