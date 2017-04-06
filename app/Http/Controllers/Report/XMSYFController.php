@@ -20,14 +20,12 @@ class XMSYFController extends Controller
         $stime=microtime(true);
         $start = $request->get('start', date('Y-m-d', strtotime('-3 month')));
         $end = $request->get('end', date('Y-m-d'));
-//        $code = trim($request->get('code', ''));
-//        $name = trim($request->get('name', ''));
+        $project = trim($request->get('project', ''));
 
         $q = [
             'start' => $start,
             'end' => $end,
-//            'code' => $code,
-//            'name' => $name,
+            'project' => $project,
         ];
 
         $builder = DB::connection('oracle')->table('JZPM_PC_FACTBILLL_B')
@@ -38,13 +36,9 @@ class XMSYFController extends Controller
             ->whereRaw("substr(JZPM_PC_FACTBILL.DBUSIDATE, 1, 10)>='$start'")
             ->whereRaw("substr(JZPM_PC_FACTBILL.DBUSIDATE, 1, 10)<='$end'");
 
-//        if ($code !== '') {
-//            $builder->where('bd_invbasdoc.invcode', 'like', "%$code%");
-//        }
-//
-//        if ($name !== '') {
-//            $builder->where('bd_invbasdoc.invname', 'like', "%$name%");
-//        }
+        if ($project !== '') {
+            $builder->where('FDC_BD_PROJECT.VNAME', 'like', "%$project%");
+        }
 
         $data = $builder->orderBy('JZPM_PC_FACTBILL.DBUSIDATE', 'desc')
             ->paginate(100);
@@ -65,8 +59,7 @@ class XMSYFController extends Controller
     public function export(Request $request){
         $start = $request->get('start', date('Y-m-d', strtotime('-3 month')));
         $end = $request->get('end', date('Y-m-d'));
-//        $code = trim($request->get('code', ''));
-//        $name = trim($request->get('name', ''));
+        $project = trim($request->get('project', ''));
 
         $builder = DB::connection('oracle')->table('JZPM_PC_FACTBILLL_B')
             ->leftJoin('JZPM_PC_FACTBILL', 'JZPM_PC_FACTBILL.PK_FACTBILL', '=', 'JZPM_PC_FACTBILLL_B.PK_FACTBILL')
@@ -76,13 +69,9 @@ class XMSYFController extends Controller
             ->whereRaw("substr(JZPM_PC_FACTBILL.DBUSIDATE, 1, 10)>='$start'")
             ->whereRaw("substr(JZPM_PC_FACTBILL.DBUSIDATE, 1, 10)<='$end'");
 
-//        if ($code !== '') {
-//            $builder->where('bd_invbasdoc.invcode', 'like', "%$code%");
-//        }
-//
-//        if ($name !== '') {
-//            $builder->where('bd_invbasdoc.invname', 'like', "%$name%");
-//        }
+        if ($project !== '') {
+            $builder->where('FDC_BD_PROJECT.VNAME', 'like', "%$project%");
+        }
 
         $query = $builder->orderBy('JZPM_PC_FACTBILL.DBUSIDATE', 'desc');
 

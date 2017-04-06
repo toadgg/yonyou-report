@@ -12,7 +12,7 @@
                 <img src="{{ Auth::user()->headimgurl }}" alt="Avatar of {{ Auth::user()->name }}" class="img-circle profile_img">
             </div>
             <div class="profile_info">
-                <span>Welcome,</span>
+                <span>欢迎使用</span>
                 <h2>{{ Auth::user()->name }}</h2>
             </div>
         </div>
