@@ -72,8 +72,8 @@
                                         <th>#</th>
                                         {{--<th>No</th>--}}
                                         <th>项目名称</th>
-                                        <th>申请日期</th>
-                                        <th>金额（元）</th>
+                                        <th class="col-md-1">申请日期</th>
+                                        <th class="col-md-1">金额（元）</th>
                                         <th>支付范围（时间）</th>
                                         <th>试验室名称</th>
                                         <th>备注</th>
