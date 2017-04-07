@@ -30,6 +30,7 @@
                         <ul class="nav child_menu" style="display: block;">
                             <li><a href="{{ route('report.xyjh') }}">需用计划</a></li>
                             <li><a href="{{ route('report.xmsyf') }}">项目试验费</a></li>
+                            <li><a href="{{ route('report.customer') }}">客商查询</a></li>
                         </ul>
                     </li>
                 </ul>
