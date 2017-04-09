@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -30,23 +31,12 @@ class CustomerController extends Controller
         $stime=microtime(true);
         $start = $request->get('start', date('Y-m-d', strtotime('-1 month')));
         $end = $request->get('end', date('Y-m-d'));
-        $code = trim($request->get('code', ''));
-        $name = trim($request->get('name', ''));
 
         $q = [
             'start' => $start,
             'end' => $end,
-            'code' => $code,
-            'name' => $name,
+            'display' => 'default'
         ];
-
-//        if ($code !== '') {
-//            $builder->where('bd_invbasdoc.invcode', 'like', "%$code%");
-//        }
-//
-//        if ($name !== '') {
-//            $builder->where('bd_invbasdoc.invname', 'like', "%$name%");
-//        }
 
         $builder = $this->_createBuilder($q);
 
@@ -60,6 +50,15 @@ class CustomerController extends Controller
             ->select('TY_XXWHZJKS.*', 'TY_XINXIWEIHU.name', 'TY_XINXIWEIHU.dept', 'TY_XINXIWEIHU.time', 'TY_XINXIWEIHU.nc', 'TY_XINXIWEIHU.shuoming')
             ->get()
             ->keyBy('keshangname');
+
+//        $groupData = $data->groupBy('createtime');
+//        foreach ($groupData as $key => $value) {
+//            $groupData[$key] = $value->groupBy('areaclname');
+//            foreach ($groupData[$key] as $key2 => $value2) {
+//                $groupData[$key][$key2] = $value2->count();
+//            }
+//        }
+//        dd($groupData);
 
         $etime=microtime(true);
         $tips = null;
@@ -75,18 +74,39 @@ class CustomerController extends Controller
         return view('report.customer', ['rows' => $data, 'extend' => $extend, 'q' => $q, 'tips' => $tips, 'warning' => $warning]);
     }
 
-    public function export(Request $request){
-        $stime=microtime(true);
+
+    public function statistics(Request $request) {
         $start = $request->get('start', date('Y-m-d', strtotime('-1 month')));
         $end = $request->get('end', date('Y-m-d'));
-        $code = trim($request->get('code', ''));
-        $name = trim($request->get('name', ''));
 
         $q = [
             'start' => $start,
             'end' => $end,
-            'code' => $code,
-            'name' => $name,
+            'display' => 'statistics'
+        ];
+
+        $builder = $this->_createBuilder($q);
+
+        $collection = $builder->orderBy('BD_CUBASDOC.CREATETIME', 'desc')->get();
+        $groupData = $collection->groupBy('createtime');
+        foreach ($groupData as $key => $value) {
+            $groupData[$key] = $value->groupBy('areaclname');
+            foreach ($groupData[$key] as $key2 => $value2) {
+                $groupData[$key][$key2] = $value2->count();
+            }
+        }
+        return view('report.customer', ['rows' => $groupData, 'q' => $q]);
+    }
+
+
+    public function export(Request $request){
+        $start = $request->get('start', date('Y-m-d', strtotime('-1 month')));
+        $end = $request->get('end', date('Y-m-d'));
+
+        $q = [
+            'start' => $start,
+            'end' => $end,
+            'display' => 'none'
         ];
 
         $builder = $this->_createBuilder($q);
