@@ -110,7 +110,7 @@ class XMSYFController extends Controller
 
         $builder = $this->_createBuilder($q);
 
-        $query = $builder->orderBy('JZPM_PC_FACTBILL.DBUSIDATE', 'desc');
+        $query = $builder->orderBy('JZPM_PC_FACTBILL.VBILLNO', 'desc');
 
         Excel::create("XMSYF-$start-$end",function($excel) use ($query){
             $excel->sheet('项目试验费', function($sheet) use ($query){
