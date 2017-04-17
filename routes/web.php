@@ -26,6 +26,7 @@ Route::group(['prefix' => 'report'], function () {
     Route::get('xyjh/export','Report\\XYJHController@export')->name('export.xyjh');
 
     Route::any('xmsyf', 'Report\\XMSYFController@index')->name('report.xmsyf');
+    Route::get('xmsyf/statistics', 'Report\\XMSYFController@statistics')->name('report.xmsyf.statistics');
     Route::get('xmsyf/export','Report\\XMSYFController@export')->name('export.xmsyf');
 
     Route::any('customer', 'Report\\CustomerController@index')->name('report.customer');

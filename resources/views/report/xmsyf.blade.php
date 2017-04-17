@@ -45,65 +45,96 @@
                                     </div>
 
                                     <div class="form-group col-sm-6">
-                                        <div class="pull-right col-sm-5">
+                                        <div class="pull-right col-sm-7">
                                             <button id="searchBtn" type="button" class="btn btn-default">
                                                 <span class="glyphicon glyphicon-search"></span> 查询
                                             </button>
-                                            <button id="exportBtn" type="button" class="btn btn-default" @if($warning) disabled @endif>
+                                            <button id="exportBtn" type="button" class="btn btn-default">
                                                 <span class="glyphicon glyphicon-export"></span> 导出
+                                            </button>
+                                            <button id="statisticsBtn" type="button" class="btn btn-default">
+                                                <span class="fa fa-bar-chart"></span> 统计
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
 
-                            <p> @if($tips)
-                                    <span>{{ $tips }}</span>
-                                @endif
-                                @if ($warning)
-                                    <span style="color: #a94442" class="control-label"><span class="glyphicon glyphicon-info-sign"></span>{{ $warning['msg'] }}</span>
-                                @endif
-                            </p>
-
-                            <div class="table-responsive">
-                                <table class="table table-hover table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        {{--<th>No</th>--}}
-                                        <th>项目名称</th>
-                                        <th class="col-md-1">申请日期</th>
-                                        <th class="col-md-1">金额（元）</th>
-                                        <th>支付范围（时间）</th>
-                                        <th>试验室名称</th>
-                                        <th>备注</th>
-                                        {{--<th>备注</th>--}}
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @forelse ($rows as $row)
+                            @if ($q['display'] == 'statistics')
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
                                         <tr>
-                                            <th>{{ $loop->iteration }}</th>
-                                            <th>{{ $row->vname }}</th>
-                                            <th>{{ $row->dbusidate }}</th>
-                                            <th>{{ $row->nfeebasemny }}</th>
-                                            <th>{{ $row->vdef1 }}</th>
-                                            <th>{{ $row->vdef2 }}</th>
-                                            <th>{{ $row->vmome }}</th>
-                                        <tr>
-                                    @empty
-                                        <tr>
-                                            <th colspan="9" style="text-align: center">没有数据</th>
+                                            <th>项目</th>
+                                            <th>明细</th>
+                                            <th>项目总计</th>
                                         </tr>
-                                    @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                        @forelse ($rows as $key => $row)
+                                            <tr>
+                                                <th class="col-md-2">{{ $key }}</th>
+                                                <th>
+                                                    @forelse ($row['items'] as $item)
+                                                        {{$item->vbillno}}:{{$item->vname}}[ {{$item->nfeebasemny}} ] <br>
+                                                    @endforeach
+                                                </th>
+                                                <th>{{ $row['total'] }}</th>
+                                            <tr>
+                                        @empty
+                                            <tr>
+                                                <th colspan="3" style="text-align: center">没有数据</th>
+                                            </tr>
+                                        @endforelse
+                                        <tr>
+                                            <th class="col-md-2">总计</th>
+                                            <th></th>
+                                            <th>{{ $sum }}</th>
+                                        <tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @elseif($q['display'] == 'default')
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>单据号</th>
+                                            <th>项目名称</th>
+                                            <th class="col-md-1">申请日期</th>
+                                            <th class="col-md-1">金额（元）</th>
+                                            <th>支付范围（时间）</th>
+                                            <th>试验室名称</th>
+                                            <th>备注</th>
+                                            {{--<th>备注</th>--}}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @forelse ($rows as $row)
+                                            <tr>
+                                                <th>{{ $loop->iteration }}</th>
+                                                <th>{{ $row->vbillno }}</th>
+                                                <th>{{ $row->vname }}</th>
+                                                <th>{{ $row->dbusidate }}</th>
+                                                <th>{{ $row->nfeebasemny }}</th>
+                                                <th>{{ $row->vdef1 }}</th>
+                                                <th>{{ $row->vdef2 }}</th>
+                                                <th>{{ $row->vmome }}</th>
+                                            <tr>
+                                        @empty
+                                            <tr>
+                                                <th colspan="8" style="text-align: center">没有数据</th>
+                                            </tr>
+                                        @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            @if($rows)
-                                {{ $rows->appends($q)->links() }}
+                                @if($rows)
+                                    {{ $rows->appends($q)->links() }}
+                                @endif
                             @endif
-
                         </div>
                     </div>
                 </div>
@@ -115,11 +146,14 @@
 @push('scripts')
 <script>
     $("#searchBtn").on('click', function(){
-        $(this).closest('form').attr("action", "{{ route('report.xmsyf') }}").submit();
+        $(this).closest('form').attr("action", "{{ route('report.xmsyf', ['display' => 'default']) }}").submit();
     });
 
     $("#exportBtn").on('click', function(){
         $(this).closest('form').attr("action", "{{ route('export.xmsyf') }}" ).submit();
+    });
+    $("#statisticsBtn").on('click', function(){
+        $(this).closest('form').attr("action", "{{ route('report.xmsyf.statistics', ['display' => 'statistics']) }}" ).submit();
     });
 </script>
 @endpush
