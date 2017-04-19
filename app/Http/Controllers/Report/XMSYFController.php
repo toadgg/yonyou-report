@@ -46,7 +46,7 @@ class XMSYFController extends Controller
 
         $builder = $this->_createBuilder($q);
 
-        $data = $builder->orderBy('JZPM_PC_FACTBILL.VBILLNO', 'desc')
+        $data = $builder->orderBy('JZPM_PC_FACTBILL.VBILLNO')
             ->paginate(100);
         $etime=microtime(true);
         $tips = null;
@@ -76,7 +76,7 @@ class XMSYFController extends Controller
 
         $builder = $this->_createBuilder($q);
 
-        $collection = $builder->orderBy('JZPM_PC_FACTBILL.DBUSIDATE', 'desc')->get();
+        $collection = $builder->orderBy('JZPM_PC_FACTBILL.VBILLNO')->get();
         $groupData = $collection->groupBy('vname');
 
         $sum = 0;
@@ -110,7 +110,7 @@ class XMSYFController extends Controller
 
         $builder = $this->_createBuilder($q);
 
-        $query = $builder->orderBy('JZPM_PC_FACTBILL.VBILLNO', 'desc');
+        $query = $builder->orderBy('JZPM_PC_FACTBILL.VBILLNO');
 
         Excel::create("XMSYF-$start-$end",function($excel) use ($query){
             $excel->sheet('项目试验费', function($sheet) use ($query){

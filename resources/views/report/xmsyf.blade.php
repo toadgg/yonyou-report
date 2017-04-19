@@ -76,7 +76,7 @@
                                                 <th class="col-md-2">{{ $key }}</th>
                                                 <th>
                                                     @forelse ($row['items'] as $item)
-                                                        {{$item->vbillno}}:{{$item->vname}}[ {{$item->nfeebasemny}} ] <br>
+                                                        {{$item->vbillno}}:{{$item->vdef1}}[ {{$item->nfeebasemny}} ] <br>
                                                     @endforeach
                                                 </th>
                                                 <th>{{ $row['total'] }}</th>
