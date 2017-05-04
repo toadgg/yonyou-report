@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 
-
+/**
+ * Class XMSYFController
+ * @package App\Http\Controllers\Report
+ * 质量安全--项目试验经费
+ */
 class XMSYFController extends Controller
 {
 

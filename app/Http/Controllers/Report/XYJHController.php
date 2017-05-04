@@ -18,7 +18,7 @@ class XYJHController extends Controller
 
     public function index(Request $request) {
         $stime=microtime(true);
-        $start = $request->get('start', date('Y-m-d', strtotime('-3 month')));
+        $start = $request->get('start', date('Y-m-d', strtotime('-1 month')));
         $end = $request->get('end', date('Y-m-d'));
         $code = trim($request->get('code', ''));
         $name = trim($request->get('name', ''));

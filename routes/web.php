@@ -17,7 +17,7 @@
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
 
 Route::any('/', 'HomeController@index');
 
@@ -28,6 +28,9 @@ Route::group(['prefix' => 'report'], function () {
     Route::any('xmsyf', 'Report\\XMSYFController@index')->name('report.xmsyf');
     Route::get('xmsyf/statistics', 'Report\\XMSYFController@statistics')->name('report.xmsyf.statistics');
     Route::get('xmsyf/export','Report\\XMSYFController@export')->name('export.xmsyf');
+
+    Route::any('jfkdj', 'Report\\JFKDJController@index')->name('report.jfkdj');
+    Route::get('jfkdj/export','Report\\JFKDJController@export')->name('export.jfkdj');
 
     Route::any('customer', 'Report\\CustomerController@index')->name('report.customer');
     Route::get('customer/statistics', 'Report\\CustomerController@statistics')->name('report.customer.statistics');
