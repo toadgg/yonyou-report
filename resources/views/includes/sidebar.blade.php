@@ -1,7 +1,7 @@
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
-            <a href="{{ url('/') }}" class="site_title"><i class="fa fa-paw"></i> <span>天一控股</span></a>
+            <a href="{{ url('/') }}" class="site_title"><img src="http://bibihub.oss-cn-hangzhou.aliyuncs.com/tianyi-logo.gif" class="img-circle" width="32px;"/> <span>天一控股</span></a>
         </div>
         
         <div class="clearfix"></div>
