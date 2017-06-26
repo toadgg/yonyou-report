@@ -24,7 +24,7 @@ class InventoryController extends Controller
             ->leftJoin('SM_USER SM_USER_CREATOR', 'BD_INVBASDOC.CREATOR', '=', 'SM_USER_CREATOR.CUSERID')
             ->leftJoin('SM_USER SM_USER_MODIFIER', 'BD_INVBASDOC.MODIFIER', '=', 'SM_USER_MODIFIER.CUSERID')
             ->selectRaw('CONCAT(bd_invbasdoc.INVNAME, bd_invbasdoc.INVSPEC) as PK, BD_INVBASDOC.INVCODE, BD_INVBASDOC.INVNAME, BD_INVBASDOC.INVSPEC, BD_INVCL.INVCLASSNAME, BD_MEASDOC.MEASNAME, substr(BD_INVBASDOC.CREATETIME, 1, 10) as CREATETIME, SM_USER_CREATOR.USER_NAME as CREATOR, substr(BD_INVBASDOC.MODIFYTIME, 1, 10) as MODIFYTIME, SM_USER_MODIFIER.USER_NAME as MODIFIER')
-            ->whereRaw("nvl(BD_INVBASDOC.dr, 0) = 0 and ((substr(BD_INVBASDOC.MODIFYTIME, 1, 10)>=? and substr(BD_INVBASDOC.MODIFYTIME, 1, 10)<=?) or (substr(BD_INVBASDOC.CREATETIME, 1, 10)>=? and substr(BD_INVBASDOC.CREATETIME, 1, 10)<=?))", [$query['start'], $query['end'], $query['start'], $query['end']]);
+            ->whereRaw("nvl(BD_INVBASDOC.dr, 0) = 0 and (substr(BD_INVBASDOC.CREATETIME, 1, 10)>=? and substr(BD_INVBASDOC.CREATETIME, 1, 10)<=?))", [$query['start'], $query['end'], $query['start'], $query['end']]);
         return $_builder;
     }
 
