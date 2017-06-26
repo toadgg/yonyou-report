@@ -23,7 +23,7 @@ class CustomerController extends Controller
             ->leftJoin('SM_USER SM_USER_CREATOR', 'BD_CUBASDOC.CREATOR', '=', 'SM_USER_CREATOR.CUSERID')
             ->leftJoin('SM_USER SM_USER_MODIFIER', 'BD_CUBASDOC.MODIFIER', '=', 'SM_USER_MODIFIER.CUSERID')
             ->selectRaw('BD_CUBASDOC.CUSTCODE, BD_CUBASDOC.CUSTNAME, BD_CUBASDOC.CUSTSHORTNAME, BD_AREACL.AREACLNAME, BD_CUBASDOC.CONADDR,BD_CUBASDOC.PHONE1,BD_CUBASDOC.LINKMAN1, SUBSTR(BD_CUBASDOC.CREATETIME, 1, 10) AS CREATETIME, SM_USER_CREATOR.USER_NAME AS CREATOR, SUBSTR(BD_CUBASDOC.MODIFYTIME, 1, 10) AS MODIFYTIME, SM_USER_MODIFIER.USER_NAME AS MODIFIER')
-            ->whereRaw("(substr(BD_CUBASDOC.MODIFYTIME, 1, 10)>=? and substr(BD_CUBASDOC.MODIFYTIME, 1, 10)<=?) or (substr(BD_CUBASDOC.CREATETIME, 1, 10)>=? and substr(BD_CUBASDOC.CREATETIME, 1, 10)<=?)", [$query['start'], $query['end'], $query['start'], $query['end']]);
+            ->whereRaw("(substr(BD_CUBASDOC.CREATETIME, 1, 10)>=? and substr(BD_CUBASDOC.CREATETIME, 1, 10)<=?)", [$query['start'], $query['end'], $query['start'], $query['end']]);
         return $_builder;
     }
 
