@@ -43,7 +43,7 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'tywy'),
+            'database' => env('DB_DATABASE', 'yonyou_report'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', 'root'),
             'charset' => 'utf8mb4',
@@ -51,6 +51,26 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => null,
+        ],
+
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST', '192.168.3.11'),
+            'database' => env('DB_DATABASE', 'C6'),
+            'username' => env('DB_USERNAME', 'sa'),
+            'password' => env('DB_PASSWORD', '(Ynanxun#101224)'),
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+
+        'fwoa' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_HOST', '192.168.3.5'),
+            'database' => env('DB_DATABASE', 'ecology'),
+            'username' => env('DB_USERNAME', 'sa'),
+            'password' => env('DB_PASSWORD', 'asd@123'),
+            'charset' => 'utf8',
+            'prefix' => '',
         ],
 
         'pgsql' => [

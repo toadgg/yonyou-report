@@ -51,6 +51,18 @@ class CustomerController extends Controller
             ->get()
             ->keyBy('keshangname');
 
+        $fwoaExtend = DB::connection('fwoa')->table('formtable_main_38_dt1')
+            ->join('formtable_main_38', 'formtable_main_38_dt1.mainid', '=', 'formtable_main_38.id')
+            ->join('HrmResource', 'formtable_main_38.sqr', '=', 'HrmResource.id')
+            ->join('HrmDepartment', 'formtable_main_38.bm', '=', 'HrmDepartment.id')
+            ->where('formtable_main_38_dt1.ksmc', '!=', '')
+            ->whereIn('formtable_main_38_dt1.ksmc', array_column($data->items(), 'custname'))
+            ->select('formtable_main_38_dt1.*', 'HrmResource.lastname as name', 'HrmDepartment.departmentname as dept')
+            ->get()
+            ->keyBy('ksmc');
+
+        $extend = $extend->merge($fwoaExtend);
+
 //        $groupData = $data->groupBy('createtime');
 //        foreach ($groupData as $key => $value) {
 //            $groupData[$key] = $value->groupBy('areaclname');
