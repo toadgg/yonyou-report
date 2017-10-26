@@ -125,6 +125,17 @@ class InventoryController extends Controller
             ->get()
             ->keyBy('pk');
 
+        $fwoaExtend = DB::connection('fwoa')->table('formtable_main_38_dt2')
+            ->join('formtable_main_38', 'formtable_main_38_dt2.mainid', '=', 'formtable_main_38.id')
+            ->join('HrmResource', 'formtable_main_38.sqr', '=', 'HrmResource.id')
+            ->join('HrmDepartment', 'formtable_main_38.bm', '=', 'HrmDepartment.id')
+            ->where('formtable_main_38_dt2.chmc', '!=', '')
+            ->selectRaw('(formtable_main_38_dt2.chmc + formtable_main_38_dt2.ggxh) as pk, HrmResource.lastname as name, HrmDepartment.departmentname as dept')
+            ->get()
+            ->keyBy('pk');
+
+        $extend = $extend->merge($fwoaExtend);
+
         foreach ($data as $inventory) {
             if (empty($extend[$inventory->pk])) {
                 $inventory->dept = '';
