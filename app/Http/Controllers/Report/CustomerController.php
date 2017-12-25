@@ -43,15 +43,7 @@ class CustomerController extends Controller
         $data = $builder->orderBy('BD_CUBASDOC.CREATETIME', 'desc')
             ->paginate(100);
 
-        $extend = DB::connection('sqlsrv')->table('TY_XXWHZJKS')
-            ->join('TY_XINXIWEIHU', 'TY_XINXIWEIHU.ty_xinxiid', '=', 'TY_XXWHZJKS.ty_xinxiid')
-            ->where('TY_XXWHZJKS.keshangname', '!=', '')
-            ->whereIn('TY_XXWHZJKS.keshangname', array_column($data->items(), 'custname'))
-            ->select('TY_XXWHZJKS.*', 'TY_XINXIWEIHU.name', 'TY_XINXIWEIHU.dept', 'TY_XINXIWEIHU.time', 'TY_XINXIWEIHU.nc', 'TY_XINXIWEIHU.shuoming')
-            ->get()
-            ->keyBy('keshangname');
-
-        $fwoaExtend = DB::connection('fwoa')->table('formtable_main_38_dt1')
+        $extend = DB::connection('fwoa')->table('formtable_main_38_dt1')
             ->join('formtable_main_38', 'formtable_main_38_dt1.mainid', '=', 'formtable_main_38.id')
             ->join('HrmResource', 'formtable_main_38.sqr', '=', 'HrmResource.id')
             ->join('HrmDepartment', 'formtable_main_38.bm', '=', 'HrmDepartment.id')
@@ -60,8 +52,6 @@ class CustomerController extends Controller
             ->select('formtable_main_38_dt1.*', 'HrmResource.lastname as name', 'HrmDepartment.departmentname as dept')
             ->get()
             ->keyBy('ksmc');
-
-        $extend = $extend->merge($fwoaExtend);
 
 //        $groupData = $data->groupBy('createtime');
 //        foreach ($groupData as $key => $value) {
@@ -125,14 +115,7 @@ class CustomerController extends Controller
 
         $data = $builder->orderBy('BD_CUBASDOC.CREATETIME', 'desc')->get()->toArray();
 
-        $extend = DB::connection('sqlsrv')->table('TY_XXWHZJKS')
-            ->join('TY_XINXIWEIHU', 'TY_XINXIWEIHU.ty_xinxiid', '=', 'TY_XXWHZJKS.ty_xinxiid')
-            ->where('TY_XXWHZJKS.keshangname', '!=', '')
-            ->select('TY_XXWHZJKS.*', 'TY_XINXIWEIHU.name', 'TY_XINXIWEIHU.dept', 'TY_XINXIWEIHU.time', 'TY_XINXIWEIHU.nc', 'TY_XINXIWEIHU.shuoming')
-            ->get()
-            ->keyBy('keshangname');
-
-        $fwoaExtend = DB::connection('fwoa')->table('formtable_main_38_dt1')
+        $extend = DB::connection('fwoa')->table('formtable_main_38_dt1')
             ->join('formtable_main_38', 'formtable_main_38_dt1.mainid', '=', 'formtable_main_38.id')
             ->join('HrmResource', 'formtable_main_38.sqr', '=', 'HrmResource.id')
             ->join('HrmDepartment', 'formtable_main_38.bm', '=', 'HrmDepartment.id')
@@ -140,8 +123,6 @@ class CustomerController extends Controller
             ->select('formtable_main_38_dt1.*', 'HrmResource.lastname as name', 'HrmDepartment.departmentname as dept')
             ->get()
             ->keyBy('ksmc');
-
-        $extend = $extend->merge($fwoaExtend);
 
         foreach ($data as $customer) {
             if (empty($extend[$customer->custname])) {

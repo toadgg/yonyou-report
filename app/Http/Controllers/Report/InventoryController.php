@@ -44,15 +44,7 @@ class InventoryController extends Controller
         $data = $builder->orderBy('BD_INVBASDOC.CREATETIME', 'desc')
             ->paginate(100);
 
-        $extend = DB::connection('sqlsrv')->table('TY_XINXIWEIHU')
-            ->join('TY_XXWHZJCH', 'TY_XINXIWEIHU.ty_xinxiid', '=', 'TY_XXWHZJCH.ty_xinxiid')
-            ->where('TY_XXWHZJCH.cunhuoname', '!=', '')
-            ->whereIn('TY_XXWHZJCH.cunhuoname', array_column($data->items(), 'invname'))
-            ->selectRaw('(TY_XXWHZJCH.cunhuoname + TY_XXWHZJCH.guige) as pk, TY_XXWHZJCH.*, TY_XINXIWEIHU.name, TY_XINXIWEIHU.dept, TY_XINXIWEIHU.time, TY_XINXIWEIHU.nc, TY_XINXIWEIHU.shuoming')
-            ->get()
-            ->keyBy('pk');
-
-        $fwoaExtend = DB::connection('fwoa')->table('formtable_main_38_dt2')
+        $extend = DB::connection('fwoa')->table('formtable_main_38_dt2')
             ->join('formtable_main_38', 'formtable_main_38_dt2.mainid', '=', 'formtable_main_38.id')
             ->join('HrmResource', 'formtable_main_38.sqr', '=', 'HrmResource.id')
             ->join('HrmDepartment', 'formtable_main_38.bm', '=', 'HrmDepartment.id')
@@ -61,8 +53,6 @@ class InventoryController extends Controller
             ->selectRaw('(formtable_main_38_dt2.chmc + formtable_main_38_dt2.ggxh) as pk, HrmResource.lastname as name, HrmDepartment.departmentname as dept')
             ->get()
             ->keyBy('pk');
-
-        $extend = $extend->merge($fwoaExtend);
 
         $etime=microtime(true);
         $tips = null;
@@ -118,14 +108,7 @@ class InventoryController extends Controller
 
         $data = $builder->orderBy('BD_INVBASDOC.CREATETIME', 'desc')->get()->toArray();
 
-        $extend = DB::connection('sqlsrv')->table('TY_XINXIWEIHU')
-            ->join('TY_XXWHZJCH', 'TY_XINXIWEIHU.ty_xinxiid', '=', 'TY_XXWHZJCH.ty_xinxiid')
-            ->where('TY_XXWHZJCH.cunhuoname', '!=', '')
-            ->selectRaw('(TY_XXWHZJCH.cunhuoname + TY_XXWHZJCH.guige) as pk, TY_XXWHZJCH.*, TY_XINXIWEIHU.name, TY_XINXIWEIHU.dept, TY_XINXIWEIHU.time, TY_XINXIWEIHU.nc, TY_XINXIWEIHU.shuoming')
-            ->get()
-            ->keyBy('pk');
-
-        $fwoaExtend = DB::connection('fwoa')->table('formtable_main_38_dt2')
+        $extend = DB::connection('fwoa')->table('formtable_main_38_dt2')
             ->join('formtable_main_38', 'formtable_main_38_dt2.mainid', '=', 'formtable_main_38.id')
             ->join('HrmResource', 'formtable_main_38.sqr', '=', 'HrmResource.id')
             ->join('HrmDepartment', 'formtable_main_38.bm', '=', 'HrmDepartment.id')
@@ -133,8 +116,6 @@ class InventoryController extends Controller
             ->selectRaw('(formtable_main_38_dt2.chmc + formtable_main_38_dt2.ggxh) as pk, HrmResource.lastname as name, HrmDepartment.departmentname as dept')
             ->get()
             ->keyBy('pk');
-
-        $extend = $extend->merge($fwoaExtend);
 
         foreach ($data as $inventory) {
             if (empty($extend[$inventory->pk])) {
