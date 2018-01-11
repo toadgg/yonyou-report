@@ -109,6 +109,7 @@
                     <div>
                         <button id="unsignBtn" type="button" class="btn btn-default active">未签到</button>
                         <button id="signBtn" type="button" class="btn btn-default">全部</button>
+                        <button id="refreshBtn" type="button" class="btn btn-default glyphicon glyphicon-refresh"></button>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover table-bordered">
@@ -136,6 +137,7 @@
 
 @push('scripts')
 <script>
+    var refreshUrl;
     $("#searchBtn").on('click', function(){
         $(this).closest('form').attr("action", "{{ route('report.meeting', ['display' => 'default']) }}").submit();
     });
@@ -143,6 +145,7 @@
         $("#myModalLabel").html($(this).data('name'));
         var id = $(this).data('id');
         var url = "{{ route('report.meeting') }}" + '/' + id;
+        refreshUrl = url;
         var $tbody = $(".modal table tbody");
         $tbody.html('<tr><th colspan="4" style="text-align: center">数据请求中...</th></tr>');
         $.get(url, function(result){
@@ -161,6 +164,17 @@
         } else {
             $('tr.sign').hide();
         }
+    });
+    $("#refreshBtn").on('click', function(){
+        $.get(refreshUrl, function(result){
+            $(".modal table tbody").html(result);
+            $("#refreshBtn").blur();
+            if($("#signBtn").hasClass('active')) {
+                $('tr.sign').show();
+            } else {
+                $('tr.sign').hide();
+            }
+        });
     });
 </script>
 @endpush
