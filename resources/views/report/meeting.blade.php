@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.none')
 
 @section('main_container')
     <div class="right_col">
