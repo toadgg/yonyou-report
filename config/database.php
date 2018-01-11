@@ -53,16 +53,6 @@ return [
             'engine' => null,
         ],
 
-        'sqlsrv' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', '192.168.3.11'),
-            'database' => env('DB_DATABASE', 'C6'),
-            'username' => env('DB_USERNAME', 'sa'),
-            'password' => env('DB_PASSWORD', '(Ynanxun#101224)'),
-            'charset' => 'utf8',
-            'prefix' => '',
-        ],
-
         'fwoa' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', '192.168.3.5'),
