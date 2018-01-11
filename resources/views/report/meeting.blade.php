@@ -57,8 +57,9 @@
                                             <th>会议地点</th>
                                             <th>联系人</th>
                                             <th>会议时间</th>
-                                            <th>未签到人数</th>
-                                            <th>签到/应到人数</th>
+                                            <th>状态</th>
+                                            <th>未签到</th>
+                                            <th>签到/应到</th>
                                             <th>签到进度</th>
                                             <th>查看详情</th>
                                         </tr>
@@ -72,6 +73,23 @@
                                                 <th>{{ $row->address }}</th>
                                                 <th>{{ $row->contacter }}</th>
                                                 <th>{{ $row->begintime }}</th>
+                                                <th>
+                                                    @if ($row->meetingstatus == 0)
+                                                        草稿
+                                                    @elseif ($row->meetingstatus == 1)
+                                                        待审批
+                                                    @elseif ($row->meetingstatus == 2)
+                                                        正常
+                                                    @elseif ($row->meetingstatus == 3)
+                                                        退回
+                                                    @elseif ($row->meetingstatus == 4)
+                                                        取消
+                                                    @elseif ($row->meetingstatus == 5)
+                                                        结束
+                                                    @else
+                                                        未知状态
+                                                    @endif
+                                                </th>
                                                 <th>{{ $row->total - $row->signed }}</th>
                                                 <th>{{ $row->signed }}/{{ $row->total }}</th>
                                                 <th>{{ floor($row->signed/$row->total * 100) }}%</th>

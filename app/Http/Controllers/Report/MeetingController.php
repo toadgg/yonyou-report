@@ -23,7 +23,7 @@ class MeetingController extends Controller
             ->leftJoin('HrmResource', 'HrmResource.id', '=', 'meeting.contacter')
             ->leftJoin('MeetingRoom', 'MeetingRoom.id', '=', 'meeting.address')
             ->leftJoin('Meeting_Type', 'Meeting_Type.id', '=', 'meeting.meetingtype')
-            ->selectRaw('meeting.id , meeting.name, Meeting_Type.name type, HrmResource.lastname contacter, MeetingRoom.name address, meeting.begindate+\' \'+meeting.begintime begintime, count(meeting_sign.signTime) signed, count(*) total')
+            ->selectRaw('meeting.id , meeting.name, Meeting_Type.name type, HrmResource.lastname contacter, MeetingRoom.name address, meeting.begindate+\' \'+meeting.begintime begintime, meeting.meetingstatus, count(meeting_sign.signTime) signed, count(*) total')
             ->whereRaw("meeting.begindate between ? and ?", [$query['start'], $query['end']]);
         return $_builder;
     }
@@ -41,7 +41,7 @@ class MeetingController extends Controller
 
         $builder = $this->_createBuilder($q);
 
-        $data = $builder->groupBy(['meeting.id', 'meeting.name', 'meeting.begindate', 'meeting.begintime', 'HrmResource.lastname', 'MeetingRoom.name', 'Meeting_Type.name'])->orderBy('meeting.id', 'desc')
+        $data = $builder->groupBy(['meeting.id', 'meeting.name', 'meeting.begindate', 'meeting.begintime', 'HrmResource.lastname', 'MeetingRoom.name', 'Meeting_Type.name', 'meeting.meetingstatus'])->orderBy('meeting.id', 'desc')
             ->paginate(100);
 
         $etime=microtime(true);
