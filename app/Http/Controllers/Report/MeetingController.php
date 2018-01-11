@@ -20,7 +20,10 @@ class MeetingController extends Controller
     private function _createBuilder(array $query) {
         $_builder = DB::connection('fwoa')->table('meeting')
             ->leftJoin('meeting_sign', 'meeting_sign.meetingid', '=', 'meeting.id')
-            ->selectRaw('meeting.id , meeting.name, count(meeting_sign.signTime) signed, count(*) total')
+            ->leftJoin('HrmResource', 'HrmResource.id', '=', 'meeting.contacter')
+            ->leftJoin('MeetingRoom', 'MeetingRoom.id', '=', 'meeting.address')
+            ->leftJoin('Meeting_Type', 'Meeting_Type.id', '=', 'meeting.meetingtype')
+            ->selectRaw('meeting.id , meeting.name, Meeting_Type.name type, HrmResource.lastname contacter, MeetingRoom.name address, meeting.begindate+\' \'+meeting.begintime begintime, count(meeting_sign.signTime) signed, count(*) total')
             ->whereRaw("meeting.begindate between ? and ?", [$query['start'], $query['end']]);
         return $_builder;
     }
@@ -38,7 +41,7 @@ class MeetingController extends Controller
 
         $builder = $this->_createBuilder($q);
 
-        $data = $builder->groupBy(['meeting.id', 'meeting.name'])->orderBy('meeting.id', 'desc')
+        $data = $builder->groupBy(['meeting.id', 'meeting.name', 'meeting.begindate', 'meeting.begintime', 'HrmResource.lastname', 'MeetingRoom.name', 'Meeting_Type.name'])->orderBy('meeting.id', 'desc')
             ->paginate(100);
 
         $etime=microtime(true);
@@ -55,4 +58,23 @@ class MeetingController extends Controller
         return view('report.meeting', ['rows' => $data, 'q' => $q, 'tips' => $tips, 'warning' => $warning]);
     }
 
+    public function show($id)
+    {
+        $data = DB::connection('fwoa')->table('HrmResource')
+            ->leftJoin('HrmDepartment', 'HrmDepartment.id', '=', 'HrmResource.departmentid')
+            ->leftJoin('meeting_sign', 'meeting_sign.userid', '=', 'HrmResource.id')
+            ->selectRaw('HrmDepartment.departmentname, HrmResource.lastname, HrmResource.mobile, meeting_sign.signTime')
+            ->where("meeting_sign.meetingid", $id)
+            ->orderBy('meeting_sign.signTime')
+            ->orderBy('HrmDepartment.departmentname')
+            ->get();
+
+        if (count($data) == 0) {
+            echo '<tr><th colspan="4" style="text-align: center">没有数据</th></tr>';
+        } else {
+            foreach ($data as $row) {
+                echo '<tr class="'. ($row->signTime==null ? 'unsign' : 'sign') . '"><th>'. $row->departmentname .'</th><th>'. $row->lastname .'</th><th>'. $row->mobile .'</th><th>'. $row->signTime .'</th><tr>';
+            }
+        }
+    }
 }
