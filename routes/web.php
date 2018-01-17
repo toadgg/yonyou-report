@@ -39,6 +39,8 @@ Route::group(['prefix' => 'report'], function () {
     Route::any('meeting', 'Report\\MeetingController@index')->name('report.meeting');
     Route::get('meeting/{id}', 'Report\\MeetingController@show')->name('report.meeting.show');
 
+    Route::any('renting', 'Report\\RentingController@index')->name('report.renting');
+
     Route::any('inventory', 'Report\\InventoryController@index')->name('report.inventory');
     Route::get('inventory/statistics', 'Report\\InventoryController@statistics')->name('report.inventory.statistics');
     Route::get('inventory/export','Report\\InventoryController@export')->name('export.inventory');

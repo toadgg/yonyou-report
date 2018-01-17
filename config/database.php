@@ -63,6 +63,17 @@ return [
             'prefix' => '',
         ],
 
+        'rent' => [
+            'driver' => 'sqlsrv',
+            'host' => '192.168.3.211\yinshan',
+            'port' => '49187',
+            'database' => 'tianyi',
+            'username' => 'NewUser',
+            'password' => 'NewUser',
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

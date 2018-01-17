@@ -40,6 +40,11 @@
                             <li><a href="{{ route('report.meeting') }}">会议签到表</a></li>
                         </ul>
                     </li>
+                    <li><a><i class="fa fa-bar-chart-o"></i> 租赁软件报表 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('report.renting') }}">租赁费汇总表</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div class="menu_section">
