@@ -68,3 +68,15 @@
     });
 </script>
 @endpush
+
+@push('stylesheets')
+    <style>
+        .table > thead > tr > td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .table-bordered > thead > tr > td[colspan] {
+            border-bottom-width: 1px;
+        }
+    </style>
+@endpush
