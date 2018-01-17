@@ -26,8 +26,8 @@
                 <h3>常用功能</h3>
                 <ul class="nav side-menu">
 
-                    <li class="active"><a><i class="fa fa-bar-chart-o"></i> NC数据报表 <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu" style="display: block;">
+                    <li><a><i class="fa fa-bar-chart-o"></i> NC数据报表 <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
                             <li><a href="{{ route('report.xyjh') }}">需用计划</a></li>
                             <li><a href="{{ route('report.xmsyf') }}">项目试验费</a></li>
                             <li><a href="{{ route('report.jfkdj') }}">罚款登记明细</a></li>

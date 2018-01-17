@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use Hamcrest\Core\Set;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use DB;
-use Maatwebsite\Excel\Facades\Excel;
 
 
 class RentingController extends Controller
@@ -15,12 +12,7 @@ class RentingController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('auth');
-    }
-
-    private function _createBuilder(array $query) {
-        $_builder = DB::connection('rent')->select('EXEC Report_Server_TianYi_Array ?,?,?,?;',["1,2,3,4,5" , "%", "2018-01-01", "2018-01-05"]);
-        return $_builder;
+        $this->middleware('auth');
     }
 
     public function index(Request $request) {
@@ -119,7 +111,7 @@ class RentingController extends Controller
         $tips = null;
         $warning = null;
         if ($request->get('page') == null) {
-            $tips = "用时间 " . round(($etime-$stime), 3);
+            $tips = "统计用时间 " . round(($etime-$stime), 3) . ' 秒';
         }
         return view('report.renting', ['table' => $table, 'q' => $q, 'tips' => $tips, 'warning' => $warning]);
     }
